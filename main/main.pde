@@ -1,3 +1,5 @@
+
+
 Salle[] initSalles(String file){
   
   String[] tab=loadStrings(file);
@@ -29,7 +31,7 @@ SousGroupe[] initSousGroupes(String file){
   return res;
 }
 
-String[] initProfs(String file){
+  String[] initProfs(String file){
   String[] tab=loadStrings(file);
   String[]res=new String[tab.length-1];
   for(int i=1;i<tab.length;i++){
@@ -38,10 +40,11 @@ String[] initProfs(String file){
   return res;
 }
 
-void setup(){
+void initData(){
+  
   Salle[] lstSalles=initSalles("salles.csv");
   SousGroupe[] lstSousGroupes=initSousGroupes("etudiants.csv");
-  String[] profs=initProfs("enseignants.csv");
+  String[] lstProfs=initProfs("enseignants.csv");
   for(int i=0;i<lstSalles.length;i++){
     println(lstSalles[i].nom, lstSalles[i].nbPlaces,lstSalles[i].type);
   }
@@ -50,8 +53,14 @@ void setup(){
     println(lstSousGroupes[i].nomGroupe, lstSousGroupes[i].nomSsGroupe,lstSousGroupes[i].nbEtu,lstSousGroupes[i].nbRU);
   }
   println();
-  for(int i=0;i<profs.length;i++){
-    println(profs[i]);
+  for(int i=0;i<lstProfs.length;i++){
+    println(lstProfs[i]);
   }
-  exit();
+  
+
+  
+  
+}
+void setup(){
+  initData();
 }

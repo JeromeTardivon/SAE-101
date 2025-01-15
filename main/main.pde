@@ -1,4 +1,4 @@
-Event[] initEvent(String path) {
+Event[] initEvents(String path) {
   String[] lines = loadStrings(path);
   Event[] event = new Event[lines.length];
   String[] tmp;
@@ -90,7 +90,7 @@ String[] initProfs(String file) {
   return res;
 }
 
-void initData() {
+void printData() {
 
   
   for (int i=0; i<lstSalles.length; i++) {
@@ -108,6 +108,7 @@ void initData() {
   Salle[] LSTSALLES=initSalles("salles.csv");
   SousGroupe[] LSTSOUSGROUPES=initSousGroupes("etudiants.csv");
   String[] LSTPROFS=initProfs("enseignants.csv");
+  Event[] LSTEVENTS;
 
 void setup(){
   

@@ -1,4 +1,4 @@
-Event[] loadEvent(String path) {
+Event[] initEvent(String path) {
   String[] lines = loadStrings(path);
   Event[] event = new Event[lines.length];
   String[] tmp;
@@ -33,8 +33,8 @@ Event[] loadEvent(String path) {
         boolean isProf = false;
         for (int l = 0; l<DescTmp.length; l++) {
           isProf = false;
-          for (int k = 0; k<PROFS.length; k++) {
-            if (PROFS[k].equals(DescTmp[l])) {
+          for (int k = 0; k<LSTPROFS.length; k++) {
+            if (LSTPROFS[k].equals(DescTmp[l])) {
               toPush.teacher[l] = DescTmp[l];
               isProf = true;
               break;
@@ -92,9 +92,7 @@ String[] initProfs(String file) {
 
 void initData() {
 
-  Salle[] lstSalles=initSalles("salles.csv");
-  SousGroupe[] lstSousGroupes=initSousGroupes("etudiants.csv");
-  String[] lstProfs=initProfs("enseignants.csv");
+  
   for (int i=0; i<lstSalles.length; i++) {
     println(lstSalles[i].nom, lstSalles[i].nbPlaces, lstSalles[i].type);
   }
@@ -106,3 +104,11 @@ void initData() {
   for (int i=0; i<lstProfs.length; i++) {
     println(lstProfs[i]);
   }
+
+  Salle[] LSTSALLES=initSalles("salles.csv");
+  SousGroupe[] LSTSOUSGROUPES=initSousGroupes("etudiants.csv");
+  String[] LSTPROFS=initProfs("enseignants.csv");
+
+void setup(){
+  
+}

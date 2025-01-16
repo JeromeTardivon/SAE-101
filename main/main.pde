@@ -118,7 +118,7 @@ String[] initProfs(String file) {
 
 void printData() {
 
-  
+
   for (int i=0; i<LSTSALLES.length; i++) {
     println(LSTSALLES[i].nom, LSTSALLES[i].nbPlaces, LSTSALLES[i].type);
   }
@@ -132,21 +132,40 @@ void printData() {
   }
 }
 
+Event[] delNull(Event[]tab) {
+  int cpt=0;
 
-
-void triEvent(Event[] tab){
-  Event tmp=null;
-  for( int i=0;i<tab.length;i++){
-    for(int j=i;j>0;j--){
-      
-      
-      
+  for (int i=0; i<tab.length; i++) {
+    if (tab[i]!=null)cpt++;
+  }
+  Event[] res=new Event[cpt];
+  int a=0;
+  for (int i=0; i<tab.length; i++) {
+    if (tab[i]!=null) {
+      res[a]=tab[i];
+      a++;
     }
   }
-  
+  return res;
 }
-  
-  
+
+void triEvent(Event[] tab) {
+
+  for ( int i=1; i<tab.length; i++) {
+    Event tmp=null;
+    for (int j=i; j>0; j--) {
+      if (tab[j]!=null&&tab[j-1]!=null) {
+        if (!compTime(tab[j].timeStart, tab[j-1].timeStart)) {
+          tmp=tab[j];
+          tab[j]=tab[j-1];
+          tab[j-1]=tmp;
+        }
+      }
+    }
+  }
+}
+
+
 void settings() {
   size(Displaywidth, Displayheight);
 }
@@ -155,21 +174,19 @@ void setup() {
   LSTSALLES=initSalles("salles.csv");
   LSTSOUSGROUPES=initSousGroupes("etudiants.csv");
   LSTPROFS=initProfs("enseignants.csv");
-  String[] files={"INFO-BUT1-S1.ics","INFO-BUT2-S3.ics","INFO-BUT3-S5.ics","INFO-LP-ESSIR.ics"};
-  int max=loadStrings(files[0]).length;
-  for(int i=1;i<files.length;i++){
-    if(loadStrings(files[i]).length>max) max=loadStrings(files[i]).length;
-  }
-  Event[][] LSTEVENTS=new Event[files.length][int((max/12)-5)];
-  for(int i=0;i<LSTEVENTS.length;i++){
-    LSTEVENTS[i]=initEvents(files[i]);
-    
-  }
+  String[] files={"INFO-BUT1-S1.ics", "INFO-BUT2-S3.ics", "INFO-BUT3-S5.ics", "INFO-LP-ESSIR.ics"};
   
   
+  Event[][] LSTEVENTS=new Event[files.length][];
+  for (int i=0; i<LSTEVENTS.length; i++) {
+    LSTEVENTS[i]=delNull(initEvents(files[i]));
+    triEvent(LSTEVENTS[i]);
+  }
+
+
+
   initDisplay();
   rectMode(CORNERS);
-  
-
 }
 
+//AAAAMMDD"t"HHMMSS"z"

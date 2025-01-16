@@ -26,7 +26,7 @@ boolean compTime(String time1, String time2) {
 
 Event[] initEvents(String path) {
   String[] lines = loadStrings(path);
-  Event[] event = new Event[lines.length];
+  Event[] event = new Event[(lines.length - 5)/12];
   String[] tmp;
   String[] DescTmp = new String[1];
   Event toPush = new Event();

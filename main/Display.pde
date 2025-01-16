@@ -1,9 +1,12 @@
 import controlP5.*;
 
 
-final int Displaywidth=1600;
-final int Displayheight=1000;
+final int Displaywidth=800;
+final int Displayheight=800;
 
+int nbH=12;
+int first_ele=100;
+int ecare =first_ele+40;
 
 ControlP5 cp5;
 DropdownList groupDropdown;
@@ -14,11 +17,7 @@ Bouton precedent=new Bouton();
 
 void settings() {
   size(Displaywidth, Displayheight);
-}
 
-void setup() {
-  initDisplay();
-  rectMode(CORNERS);
 }
 
 void initDisplay() {
@@ -32,7 +31,7 @@ void initDisplay() {
 
   groupDropdown = cp5.addDropdownList("Select Group") //liste Deroulante des groupes
     .setPosition(width/10, height/16-10)
-    .setSize(200, 200)
+    .setSize(width/5, width/5)
     .setBarHeight(30)
     .setItemHeight(25)
     .setColorBackground(color(100, 100, 255))
@@ -40,8 +39,8 @@ void initDisplay() {
     .setColorForeground(color(150, 150, 255));
 
   salleDropdown = cp5.addDropdownList("Select salle") //liste Deroulante des salles
-    .setPosition(width/2, height/16-10)
-    .setSize(200, 200)
+    .setPosition(width/10+width/5+20, height/16-10)
+    .setSize(width/5, width/5)
     .setBarHeight(30)
     .setItemHeight(25)
     .setColorBackground(color(100, 100, 255))
@@ -53,18 +52,10 @@ void initDisplay() {
   addSalles(new String[]{"0.04", "0.05", "0.06", "0.07", "0.08", "0.09"});
 }
 
-void draw() {
-  background(240);
-  fill(0, 255, 0);
-  rect(0, 0, width, height/8);
-  textSize(18);
 
-  Edt();
-}
 
 void Edt() {
-  int first_ele=100;
-  int ecare =first_ele+40;
+
   fill(255);
   stroke(0);
   rect(first_ele, height/8+10, (width-ecare)/5+first_ele-10, height-20);
@@ -74,14 +65,16 @@ void Edt() {
   rect((width-ecare)/5*4+first_ele, height/8+10, (width-ecare)+first_ele-10, height-20);
   Boutons();
   textAlign(CENTER, CENTER);
-  heure();
+
   fill(0, 0, 0);
-    text("Lundi", ((width-ecare)/5)/2+first_ele,(height/8+30));
-    text("Mardi", (width-ecare)/5+((width-ecare)/5)/2+first_ele,(height/8+30));
-    text("Mercredi", (width-ecare)/5*2+((width-ecare)/5)/2+first_ele,(height/8+30));
-    text("Jeudi", (width-ecare)/5*3+((width-ecare)/5)/2+first_ele,(height/8+30));
-    text("Vendredi", (width-ecare)/5*4+((width-ecare)/5)/2+first_ele,(height/8+30));
-  
+  text("Lundi", ((width-ecare)/5)/2+first_ele, (height/8+30));
+  text("Mardi", (width-ecare)/5+((width-ecare)/5)/2+first_ele, (height/8+30));
+  text("Mercredi", (width-ecare)/5*2+((width-ecare)/5)/2+first_ele, (height/8+30));
+  text("Jeudi", (width-ecare)/5*3+((width-ecare)/5)/2+first_ele, (height/8+30));
+  text("Vendredi", (width-ecare)/5*4+((width-ecare)/5)/2+first_ele, (height/8+30));
+
+
+  heure();
 }
 
 void Boutons() {
@@ -114,10 +107,23 @@ void controlEvent(ControlEvent theEvent) {
 
 void heure() {
   fill(0, 0, 0);
-  int nbH=13;
   for (int i=0; i<nbH; i++) {
-    if(i!=nbH-1)text(8+i+":00", 70, ((height-20)-(height/8+20))/(nbH-1)*i+(height/8+30));
-    else text(">"+(8+i)+":00", 70, ((height-20)-(height/8+20))/(nbH-1)*i+(height/8+30));
-    
+    if (i!=nbH-1) {
+      text(8+i+":00", 70, ((height-20)-(height/8+50))/(nbH-1)*i+(height/8+50));
+      for (int y=1; y<51; y++) {
+        if (y%2==0)line((width-ecare)/50*(y-1)+first_ele-15, ((height-20)-(height/8+50))/(nbH-1)*i+(height/8+50), (width-ecare)/50*y+first_ele-15, ((height-20)-(height/8+50))/(nbH-1)*i+(height/8+50));
+        
+      }
+    } else text(">"+(8+i)+":00", 70, ((height-20)-(height/8+50))/(nbH-1)*i+(height/8+50));
   }
+}
+
+
+void draw() {
+  background(240);
+  fill(0, 255, 0);
+  rect(0, 0, width, height/8);
+  textSize(18);
+
+  Edt();
 }

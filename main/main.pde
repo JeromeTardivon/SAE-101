@@ -4,6 +4,7 @@ SousGroupe[] LSTSOUSGROUPES;
 String[] LSTPROFS;
 Event[] LSTEVENTS;
 
+
 boolean compTime(String time1, String time2) {
   time1 = time1.substring(0, 15);
   time2 = time2.substring(0, 15);
@@ -20,25 +21,6 @@ boolean compTime(String time1, String time2) {
     return true;
   } else {
     return false;
-  }
-}
-
-void sortEvent(Event[] list) {
-  Event tmp;
-  int max;
-  for (int i = 0; i<list.length; i++) {
-    max = i;
-    if (list[i] != null) {
-      for (int l = i; l<list.length; l++) {
-        if (list[l] != null && !compTime(list[l].timeStart, list[max].timeStart)) {
-          max = l;
-        }
-      }
-
-      tmp = list[max];
-      list[max] = list[i];
-      list[i] = tmp;
-    }
   }
 }
 
@@ -100,7 +82,7 @@ Salle[] initSalles(String file) {
 
   String[] tab=loadStrings(file);
   Salle[] res=new Salle[tab.length-1];
-  for (int i=1; i<tab.length; i++) { //<>//
+  for (int i=1; i<tab.length; i++) {
 
     String[] t=splitTokens(tab[i], ";");
     res[i-1]=new Salle();
@@ -149,6 +131,20 @@ void printData() {
     println(LSTPROFS[i]);
   }
 }
+
+
+
+void triEvent(Event[] tab){
+  Event tmp=null;
+  for( int i=0;i<tab.length;i++){
+    for(int j=i;j>0;j--){
+      
+      
+      
+    }
+  }
+  
+}
   
   
 void settings() {
@@ -159,9 +155,21 @@ void setup() {
   LSTSALLES=initSalles("salles.csv");
   LSTSOUSGROUPES=initSousGroupes("etudiants.csv");
   LSTPROFS=initProfs("enseignants.csv");
-  LSTEVENTS=initEvents("INFO-BUT2-S3.ics");
-
+  String[] files={"INFO-BUT1-S1.ics","INFO-BUT2-S3.ics","INFO-BUT3-S5.ics","INFO-LP-ESSIR.ics"};
+  int max=loadStrings(files[0]).length;
+  for(int i=1;i<files.length;i++){
+    if(loadStrings(files[i]).length>max) max=loadStrings(files[i]).length;
+  }
+  Event[][] LSTEVENTS=new Event[files.length][int((max/12)-5)];
+  for(int i=0;i<LSTEVENTS.length;i++){
+    LSTEVENTS[i]=initEvents(files[i]);
+    
+  }
+  
   
   initDisplay();
   rectMode(CORNERS);
+  
+
 }
+

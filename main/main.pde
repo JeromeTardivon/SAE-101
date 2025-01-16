@@ -4,6 +4,43 @@ SousGroupe[] LSTSOUSGROUPES;
 String[] LSTPROFS;
 Event[] LSTEVENTS;
 
+boolean compTime(String time1, String time2) {
+  time1 = time1.substring(0, 15);
+  time2 = time2.substring(0, 15);
+  String[] a_2 = time1.split("T");
+  String[] b_2 = time2.split("T");
+
+  if (parseInt(a_2[0]) == parseInt(b_2[0])) {
+    if (parseInt(a_2[1]) > parseInt(b_2[1])) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (parseInt(a_2[0]) > parseInt(b_2[0])) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void sortEvent(Event[] list) {
+  Event tmp;
+  int max;
+  for (int i = 0; i<list.length; i++) {
+    max = i;
+    if (list[i] != null) {
+      for (int l = i; l<list.length; l++) {
+        if (list[l] != null && !compTime(list[l].timeStart, list[max].timeStart)) {
+          max = l;
+        }
+      }
+
+      tmp = list[max];
+      list[max] = list[i];
+      list[i] = tmp;
+    }
+  }
+}
 
 Event[] initEvents(String path) {
   String[] lines = loadStrings(path);

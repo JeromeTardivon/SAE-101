@@ -26,53 +26,53 @@ boolean compTime(String time1, String time2) {
 
 Event[] initEvents(String path) {
   String[] lines = loadStrings(path);
-  Event[] event = new Event[(lines.length - 5)/12];
+  Event[] event = new Event[lines.length];
   String[] tmp;
   String[] DescTmp = new String[1];
   Event toPush = new Event();
 
   for (int i = 0; i<lines.length; i++) {
     tmp = lines[i].split(":");
-    try {
-      if (tmp[0].equals("BEGIN") && tmp[1].equals("VEVENT")) {
-        toPush = new Event();
-      } else if (tmp[0].equals("END") && tmp[1].equals("VEVENT")) {
-        event[i] = toPush;
-      } else if (tmp[0].equals("DTSTART")) {
-        toPush.timeStart = tmp[1];
-      } else if (tmp[0].equals("DTEND")) {
-        toPush.timeEnd = tmp[1];
-      } else if (tmp[0].equals("SUMMARY")) {
-        toPush.summary = tmp[1];
-      } else if (tmp[0].equals("LOCATION")) {
-        toPush.location = tmp[1].split("\\\\,");
-      } else if (tmp[0].equals("DESCRIPTION")) {
-        DescTmp[0] = "";
-        while (!lines[i + 1].split(":")[0].equals("UID")) {
-          DescTmp[0] += lines[i].substring(1);
-          i++;
-        }
+    if (tmp[0].equals("BEGIN") && tmp[1].equals("VEVENT")) {
+      toPush = new Event();
+    } else if (tmp[0].equals("END") && tmp[1].equals("VEVENT")) {
+      event[i] = toPush;
+    } else if (tmp[0].equals("DTSTART")) {
+      toPush.timeStart = tmp[1];
+    } else if (tmp[0].equals("DTEND")) {
+      toPush.timeEnd = tmp[1];
+    } else if (tmp[0].equals("SUMMARY")) {
+      toPush.summary = tmp[1];
+    } else if (tmp[0].equals("LOCATION")) {
+      try{
+      toPush.location = tmp[1].split("\\\\,");
+      } catch (ArrayIndexOutOfBoundsException e){
+        toPush.location = new String[0];
+      }
+    } else if (tmp[0].equals("DESCRIPTION")) {
+      DescTmp[0] = "";
+      while (!lines[i + 1].split(":")[0].equals("UID")) {
         DescTmp[0] += lines[i].substring(1);
-        DescTmp = DescTmp[0].split("\\\\n\\\\n")[1].split("\\\\n");
-        toPush.groupe = new String[DescTmp.length];
-        toPush.teacher = new String[DescTmp.length];
-        boolean isProf = false;
-        for (int l = 0; l<DescTmp.length; l++) {
-          isProf = false;
-          for (int k = 0; k<LSTPROFS.length; k++) {
-            if (LSTPROFS[k].equals(DescTmp[l])) {
-              toPush.teacher[l] = DescTmp[l];
-              isProf = true;
-              break;
-            }
+        i++;
+      }
+      DescTmp[0] += lines[i].substring(1);
+      DescTmp = DescTmp[0].split("\\\\n\\\\n")[1].split("\\\\n");
+      toPush.groupe = new String[DescTmp.length];
+      toPush.teacher = new String[DescTmp.length];
+      boolean isProf = false;
+      for (int l = 0; l<DescTmp.length; l++) {
+        isProf = false;
+        for (int k = 0; k<LSTPROFS.length; k++) {
+          if (LSTPROFS[k].equals(DescTmp[l])) {
+            toPush.teacher[l] = DescTmp[l];
+            isProf = true;
+            break;
           }
-          if (!isProf) {
-            toPush.groupe[l] = DescTmp[l];
-          }
+        }
+        if (!isProf) {
+          toPush.groupe[l] = DescTmp[l];
         }
       }
-    }
-    catch (ArrayIndexOutOfBoundsException e) {
     }
   }
   return event;

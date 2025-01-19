@@ -2,6 +2,7 @@ class Window {
   float x, y, sx, sy;
   float vx = 0;
   float vy = 0;
+  int destx, desty;
   int weight = 4;
 
   Window(int x, int y, int sx, int sy) {
@@ -13,19 +14,22 @@ class Window {
 
 
   void swipe(String dest) {
-    if (this.x == 0 && this.y == 0) {
-      if (dest.equals("UP")) {
-        vy = -sqrt(-2 * -(weight) * abs(-(this.y + this.sy) - this.y));
-      } else if (dest.equals("DOWN")) {
-        vy = sqrt(-2 * -(weight) * abs(height - this.y));
-      } else if (dest.equals("RIGHT")) {
-        vx = sqrt(-2 * -(weight) * abs(width - this.x));
-      } else if (dest.equals("LEFT")) {
-        vx = -sqrt(-2 * -(weight) * abs(-(this.x + this.sx) - this.x));
-      }
-    } else {
-      x = 0;
-      y = 0;
+    if (dest.equals("UP")) {
+      vy = -sqrt(-2 * -(weight) * abs(-(this.y - this.sy) - this.y));
+      desty -= (int)(this.sy);
+      destx = 0;
+    } else if (dest.equals("DOWN")) {
+      vy = sqrt(-2 * -(weight) * abs(-(this.y + this.sy) - this.y));
+      desty += (int)(this.sy);
+      destx = 0;
+    } else if (dest.equals("RIGHT")) {
+      vx = sqrt(-2 * -(weight) * abs(-(this.x + this.sx) - this.x));
+      desty = 0;
+      destx += (int)(this.sx);
+    } else if (dest.equals("LEFT")) {
+      vx = -sqrt(-2 * -(weight) * abs(-(this.x - this.sx) - this.x));
+      desty = 0;
+      destx -= (int)(this.sx);
     }
   }
 
@@ -33,17 +37,6 @@ class Window {
     if (vx != 0 || vy != 0) {
       x += vx;
       y += vy;
-
-      if ((x + sx)<0) {
-        x = -sx;
-      } else if (x>width) {
-        x = width;
-      }
-      if ((y + sy)<0) {
-        y = -sy;
-      } else if (y>height) {
-        y = height;
-      }
 
       if (vx > 0) {
         vx -= weight;
@@ -60,6 +53,9 @@ class Window {
         vy += weight;
         if (vy > 0) vy = 0;
       }
+    } else {
+      this.x = this.destx;
+      this.y = this.desty;
     }
   }
 }
@@ -74,15 +70,26 @@ class Edt extends Window {
   }
 
   void display() {
+    fill(125);
     rect(x, y, sx, sy);
+    fill(0);
+    text("Random text", x, y + 128);
+    fill(color((int)random(255), (int)random(255), (int)random(255)));
+    rect((int)random(x, x + 600), (int)random(y, y + 500), (int)random(0, 200), (int)random(0, 100));
+    fill(color((int)random(255), (int)random(255), (int)random(255)));
+    rect((int)random(x, x + 600), (int)random(y, y + 500), (int)random(0, 200), (int)random(0, 100));
+    fill(color((int)random(255), (int)random(255), (int)random(255)));
+    rect((int)random(x, x + 600), (int)random(y, y + 500), (int)random(0, 200), (int)random(0, 100));
   }
 }
 
 Edt edt;
+PFont font;
 
 void setup() {
-  size(1020, 1080);
-  fill(125);
+  size(800, 600);
+  font = createFont("Noto Sans", 128);
+  textFont(font);
   edt = new Edt("Start", "Stop", 0, 0, 800, 600);
 }
 
